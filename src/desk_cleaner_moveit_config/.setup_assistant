@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: desk_cleaner_bringup
+    relative_path: urdf/ur5e_desk_cleaner.urdf.xacro
+  srdf:
+    relative_path: config/ur5e_desk_cleaner.srdf
+  package_settings:
+    author_name: ""
+    author_email: ""
+    generated_timestamp: 1774121752

@@ -1,0 +1,44 @@
+# Trajectory execution parameters for ros2_control
+moveit_manage_controllers: true
+
+# Trajectory smoothing settings
+trajectory_execution:
+  # Smoothing algorithm settings
+  trajectory_post_processor: "time_optimal_trajectory_generation"
+  
+  # Retry timeout - retry failed trajectory execution
+  execution_duration_monitoring: false
+  allowed_execution_duration_scaling: 2.0
+  allowed_goal_duration_margin: 10.0
+  
+  # Managed controllers (must exist in controller_manager)
+  managed_controllers:
+    - joint_trajectory_controller
+    - robotiq_gripper_controller
+  controller_management_action: controller_manager/list_controllers
+
+  controller_names:
+    - joint_trajectory_controller
+    - robotiq_gripper_controller
+
+  # UR5e arm controller
+  joint_trajectory_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - shoulder_pan_joint
+      - shoulder_lift_joint
+      - elbow_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+
+  # Robotiq gripper controller
+  robotiq_gripper_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: false
+    joints:
+      - robotiq_85_left_knuckle_joint
+      - robotiq_85_right_knuckle_joint

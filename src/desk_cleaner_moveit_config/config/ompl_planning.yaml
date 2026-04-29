@@ -1,0 +1,194 @@
+# Ompl planning plugin configuration for desk cleaner robot
+# This enables RRT, RRTConnect, and other sampling-based planners
+planning_pipelines:
+  pipeline_names: ["ompl"]
+  ompl:
+    request_adapters: >-
+      default_planner_request_adapters/FixWorkspaceBounds
+      default_planner_request_adapters/FixStartStateBounds
+      default_planner_request_adapters/FixStartStateCollision
+      default_planner_request_adapters/FixStartStatePathConstraints
+      default_planner_request_adapters/AddTimeOptimalParameterization
+
+planning_plugin: "ompl_interface/OMPLPlanner"
+planning_plugins:
+  ompl_interface/OMPLPlanner:
+    parameter_namespace: "ompl"
+request_adapters: >-
+  default_planner_request_adapters/AddTimeOptimalParameterization
+  default_planner_request_adapters/FixWorkspaceBounds
+  default_planner_request_adapters/FixStartStateBounds
+  default_planner_request_adapters/FixStartStateCollision
+  default_planner_request_adapters/FixStartStatePathConstraints
+start_state_max_bounds_error: 0.1
+jiggle_fraction: 0.05
+max_planning_threads: 4
+max_goal_samples: 5000
+max_state_samples: 40000
+max_goal_sampling_attempts: 1000
+max_planning_attempts: 10
+max_iterations: 40
+min_segment_length: 0.05
+improvementThreshold: 0.0
+
+# Planner-specific parameters
+ompl:
+  planning_plugin: "ompl_interface/OMPLPlanner"
+  planning_attempts: 20
+  time_limit: 30.0
+
+  # UR Manipulator Planner Configuration
+  ur_manipulator:
+    start_state_max_bounds_error: 0.1
+    jiggle_fraction: 0.05
+    default_planner_config: "RRTConnect"
+    planner_configs:
+      - SBL
+      - EST
+      - CForest
+      - KPIECE
+      - BKPIECE
+      - LBKPIECE
+      - PDST
+      - RRT
+      - RRTConnect
+      - RRTstar
+      - TRRT
+      - PRM
+      - PRMstar
+      - LazyPRM
+      - LazyPRMstar
+      - SPARS
+      - SPARStwo
+
+    SBL:
+      type: geometric::SBL
+      range: 0.0  # Max motion in meters allowed between states
+
+    EST:
+      type: geometric::EST
+      range: 0.0  # Max motion in meters allowed between states
+      goal_bias: 0.05
+
+    KPIECE:
+      type: geometric::KPIECE1
+      range: 0.0
+      goal_bias: 0.05
+      border_fraction: 0.9
+      failed_expansion_score_factor: 0.5
+      min_valid_path_fraction: 0.5
+
+    BKPIECE:
+      type: geometric::BKPIECE1
+      range: 0.0
+      goal_bias: 0.05
+      border_fraction: 0.9
+      failed_expansion_score_factor: 0.5
+      min_valid_path_fraction: 0.5
+
+    LBKPIECE:
+      type: geometric::LBKPIECE1
+      range: 0.0
+      goal_bias: 0.05
+      border_fraction: 0.9
+      min_valid_path_fraction: 0.5
+
+    PDST:
+      type: geometric::PDST
+      goal_bias: 0.05
+
+    RRT:
+      type: geometric::RRT
+      range: 0.0
+      goal_bias: 0.05
+
+    RRTConnect:
+      type: geometric::RRTConnect
+      range: 0.0
+      goal_bias: 0.05
+
+    RRTstar:
+      type: geometric::RRTstar
+      range: 0.0
+      goal_bias: 0.05
+      delay_collision_checking: 1
+      use_k_nearest: 1
+      k_nearest_neighbors: 0
+      max_radius: 0.0
+      rewire_factor: 1.1
+
+    TRRT:
+      type: geometric::TRRT
+      range: 0.0
+      goal_bias: 0.05
+      max_phi: 0.0
+      instant_collapse: 0
+
+    PRM:
+      type: geometric::PRM
+      max_nearest_neighbors: 10
+
+    PRMstar:
+      type: geometric::PRMstar
+      max_nearest_neighbors: 10
+
+    LazyPRM:
+      type: geometric::LazyPRM
+      range: 0.0
+      max_nearest_neighbors: 10
+
+    LazyPRMstar:
+      type: geometric::LazyPRMstar
+      range: 0.0
+      max_nearest_neighbors: 10
+
+    SPARS:
+      type: geometric::SPARS
+      max_nearest_neighbors: 10
+      dense_delta_fraction: 0.001
+      sparse_delta_fraction: 0.25
+      stretch_factor: 1.3
+
+    SPARStwo:
+      type: geometric::SPARStwo
+      max_nearest_neighbors: 10
+      dense_delta_fraction: 0.001
+      sparse_delta_fraction: 0.25
+      stretch_factor: 1.3
+  
+  max_velocity_scaling_factor: 0.5   # reduce to something reasonable
+  max_acceleration_scaling_factor: 0.5
+
+  # Robotiq Gripper Planner Configuration
+  robotiq_gripper:
+    start_state_max_bounds_error: 0.1
+    jiggle_fraction: 0.05
+    default_planner_config: "RRTConnect"
+    planner_configs: [RRTConnect, RRT]
+
+    RRTConnect:
+      type: geometric::RRTConnect
+      range: 0.0
+      goal_bias: 0.05
+
+    RRT:
+      type: geometric::RRT
+      range: 0.0
+      goal_bias: 0.05
+
+  # Combined arm + gripper planner
+  ur_manipulator_with_gripper:
+    start_state_max_bounds_error: 0.1
+    jiggle_fraction: 0.05
+    default_planner_config: "RRTConnect"
+    planner_configs: [RRTConnect, RRT]
+
+    RRTConnect:
+      type: geometric::RRTConnect
+      range: 0.0
+      goal_bias: 0.05
+
+    RRT:
+      type: geometric::RRT
+      range: 0.0
+      goal_bias: 0.05

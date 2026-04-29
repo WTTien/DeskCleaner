@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>desk_cleaner_moveit_config</name>
+  <version>0.0.1</version>
+  <description>
+    MoveIt2 configuration for UR5e + Robotiq 2F-85 gripper on desk pedestal.
+    Includes motion planning, collision avoidance, and gripper control.
+  </description>
+  <maintainer email="contact@example.com">Desk Cleaner Team</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <url type="website">https://github.com/example/desk_cleaner</url>
+  <url type="bugtracker">https://github.com/example/desk_cleaner/issues</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>moveit_core</depend>
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>moveit_ros_move_group</depend>
+  <depend>moveit_simple_controller_manager</depend>
+  <depend>moveit_servo</depend>
+  <depend>geometry_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>ur_description</depend>
+  <depend>robotiq_description</depend>
+
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ros2_control_node</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

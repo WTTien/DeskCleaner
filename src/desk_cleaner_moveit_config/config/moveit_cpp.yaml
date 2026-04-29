@@ -1,0 +1,17 @@
+moveit_cpp:
+  planning_pipelines:
+    ompl:
+      request_adapters:
+        - default_planner_request_adapters/AddTimeOptimalParameterization
+        - default_planner_request_adapters/FixWorkspaceBounds
+        - default_planner_request_adapters/FixStartStateBounds
+        - default_planner_request_adapters/FixStartStateCollision
+        - default_planner_request_adapters/FixStartStatePathConstraints
+      start_state_max_bounds_error: 0.1
+
+  planning_scene_monitor_options:
+    publish_planning_scene: true
+    publish_geometry_updates: true
+    publish_state_updates: true
+    publish_transforms_updates: true
+    octomap_frame: world

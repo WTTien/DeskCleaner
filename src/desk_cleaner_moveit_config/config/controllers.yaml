@@ -1,0 +1,31 @@
+moveit_simple_controller_manager:
+  controller_manager_name: controller_manager
+  use_controller_manager: true
+  # Namespace of the controller_manager
+  namespace: /
+
+  controller_names:
+    - joint_trajectory_controller
+    - robotiq_gripper_controller
+  # These are the controllers managed by the controller_manager
+  # UR5e joints controller
+  joint_trajectory_controller:
+      action_ns: follow_joint_trajectory
+      type: FollowJointTrajectory
+      joints:
+        - shoulder_pan_joint
+        - shoulder_lift_joint
+        - elbow_joint
+        - wrist_1_joint
+        - wrist_2_joint
+        - wrist_3_joint
+      default: true
+
+  # Robotiq gripper controller
+  robotiq_gripper_controller:
+      action_ns: follow_joint_trajectory
+      type: FollowJointTrajectory
+      joints:
+        - robotiq_85_left_knuckle_joint
+        - robotiq_85_right_knuckle_joint
+      default: false
