@@ -5,6 +5,7 @@ from launch.substitutions import (
     Command,
     FindExecutable,
     PathJoinSubstitution,
+    PythonExpression,
 )
 
 from launch_ros.descriptions import ParameterValue
@@ -45,6 +46,11 @@ def get_robot_description(sim_gazebo=None):
             " ",
             "sim_gazebo:=",
             sim_gazebo,
+        ]
+        xacro_cmd += [
+            " ",
+            "use_fake_hardware:=",
+            PythonExpression(["'false' if '", sim_gazebo, "' == 'true' else 'true'"])
         ]
 
     return ParameterValue(

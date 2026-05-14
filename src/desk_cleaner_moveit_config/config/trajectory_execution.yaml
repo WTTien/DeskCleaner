@@ -41,4 +41,3 @@ trajectory_execution:
     default: false
     joints:
       - robotiq_85_left_knuckle_joint
-      - robotiq_85_right_knuckle_joint

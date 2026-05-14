@@ -41,7 +41,6 @@ robotiq_gripper_controller:
   ros__parameters:
     joints:
       - robotiq_85_left_knuckle_joint
-      - robotiq_85_right_knuckle_joint
 
     command_interfaces:
       - position
@@ -53,5 +52,3 @@ robotiq_gripper_controller:
     state_publish_rate: 50.0
     action_monitor_rate: 20.0
     allow_partial_joints_goal: false
-
-

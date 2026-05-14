@@ -27,5 +27,4 @@ moveit_simple_controller_manager:
       type: FollowJointTrajectory
       joints:
         - robotiq_85_left_knuckle_joint
-        - robotiq_85_right_knuckle_joint
       default: false
