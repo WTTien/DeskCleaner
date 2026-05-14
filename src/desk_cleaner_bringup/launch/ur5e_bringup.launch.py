@@ -46,6 +46,12 @@ def generate_launch_description():
     
     # -- Arguments --
 
+    use_sim_time_arg = DeclareLaunchArgument(
+        'use_sim_time', default_value='false',
+        description='Use simulation (Gazebo) clock if true',
+    )
+    use_sim_time = LaunchConfiguration('use_sim_time')
+
     image_file_arg = DeclareLaunchArgument(
         'image_file', default_value='',
         description='Path to a desk photo for single-image mode',
@@ -70,6 +76,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'robot_description': robot_description_content,
+            'use_sim_time': use_sim_time,
         }],
     )
 
@@ -94,6 +101,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             'launch_moveit_rviz': 'true',
+            'use_sim_time': use_sim_time,
         }.items(),
     )
 
@@ -103,7 +111,8 @@ def generate_launch_description():
         executable="ros2_control_node",
         parameters=[
             {"robot_description": robot_description_content},
-            os.path.join(bringup_dir, "config", "ur5e_controllers.yaml")
+            os.path.join(bringup_dir, "config", "ur5e_controllers.yaml"),
+            {'use_sim_time': use_sim_time},
         ],
         output="screen",
         condition=UnlessCondition(gazebo_run),  # ✅ SKIP when gazebo_run=true
@@ -115,6 +124,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        parameters=[{'use_sim_time': use_sim_time}],
         output="screen",
     )
 
@@ -122,6 +132,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],
+        parameters=[{'use_sim_time': use_sim_time}],
         output="screen",
     )
 
@@ -129,6 +140,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["robotiq_gripper_controller", "--controller-manager", "/controller_manager"],
+        parameters=[{'use_sim_time': use_sim_time}],
         output="screen",
     )
 
@@ -140,6 +152,7 @@ def generate_launch_description():
         name='rviz2',
         output='screen',
         arguments=['-d', os.path.join(bringup_dir, 'rviz', 'desk_cleaner.rviz')],
+        parameters=[{'use_sim_time': use_sim_time}],
         condition=IfCondition(LaunchConfiguration('use_view_robot_rviz')),
     )
 
@@ -152,6 +165,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             os.path.join(config_dir, 'ur5e_arm.yaml'),
+            {'use_sim_time': use_sim_time},
         ],
     )
 
@@ -163,6 +177,7 @@ def generate_launch_description():
         parameters=[
             os.path.join(config_dir, 'perception.yaml'),
             {'image_file': LaunchConfiguration('image_file')},
+            {'use_sim_time': use_sim_time},
         ],
     )
 
@@ -173,10 +188,12 @@ def generate_launch_description():
         output='screen',
         parameters=[
             os.path.join(config_dir, 'planner.yaml'),
+            {'use_sim_time': use_sim_time},
         ],
     )
 
     return LaunchDescription([
+        use_sim_time_arg,
         image_file_arg,
         use_view_robot_rviz_arg,
         gazebo_run_arg,

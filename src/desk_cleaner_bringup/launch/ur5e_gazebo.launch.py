@@ -87,6 +87,7 @@ def generate_launch_description():
             'use_rviz': LaunchConfiguration('use_rviz'),
             'image_file': LaunchConfiguration('image_file'),
             'gazebo_run': 'true',
+            'use_sim_time': 'true',
         }.items(),
     )
 

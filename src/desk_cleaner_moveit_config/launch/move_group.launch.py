@@ -42,6 +42,13 @@ def generate_launch_description():
     srdf_file = os.path.join(moveit_dir, "config", "desk_cleaner.srdf.xacro")
 
     # Arguments
+    use_sim_time_arg = DeclareLaunchArgument(
+        "use_sim_time",
+        default_value="false",
+        description="Use simulation (Gazebo) clock if true",
+    )
+    use_sim_time = LaunchConfiguration("use_sim_time")
+
     launch_moveit_rviz_arg = DeclareLaunchArgument(
         "launch_moveit_rviz",
         default_value="true",
@@ -79,7 +86,8 @@ def generate_launch_description():
                 "robot_description": robot_description_content,
                 "robot_description_semantic": robot_description_semantic_content,
                 "robot_description_kinematics": kinematics,
-                "robot_description_planning": joint_limits
+                "robot_description_planning": joint_limits,
+                "use_sim_time": use_sim_time,
             },
             load_yaml(os.path.join(moveit_dir, "config", "ompl_planning.yaml")),
             load_yaml(os.path.join(moveit_dir, "config", "trajectory_execution.yaml")),
@@ -107,12 +115,14 @@ def generate_launch_description():
                 "robot_description": robot_description_content,
                 "robot_description_semantic": robot_description_semantic_content,
                 "robot_description_kinematics": kinematics,
+                "use_sim_time": use_sim_time,
             },
         ],
         condition=IfCondition(LaunchConfiguration("launch_moveit_rviz")),
     )
 
     return LaunchDescription([
+        use_sim_time_arg,
         launch_moveit_rviz_arg,
         debug_arg,
         move_group_node,
