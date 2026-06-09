@@ -22,6 +22,7 @@ Prerequisites:
 """
 
 import os
+import yaml
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -32,10 +33,13 @@ from launch.actions import (
 from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
+    Command,
+    FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
 )
 from launch_ros.actions import Node
+from launch_ros.descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 from desk_cleaner_bringup.utils import get_robot_description
@@ -192,6 +196,38 @@ def generate_launch_description():
         ],
     )
 
+    def load_yaml(file_path):
+        try:
+            with open(file_path, "r") as file:
+                return yaml.safe_load(file)
+        except EnvironmentError:
+            return None
+        
+    moveit_dir = get_package_share_directory("desk_cleaner_moveit_config")
+    srdf_file = os.path.join(moveit_dir, "config", "desk_cleaner.srdf.xacro")
+    robot_description_semantic_content = ParameterValue(
+        Command([
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            srdf_file,
+        ]),
+        value_type=str,
+    )
+    kinematics = load_yaml(os.path.join(moveit_dir, "config", "kinematics.yaml"))
+
+    task_handler_node = Node(
+        package='desk_cleaner_task_handler',
+        executable='task_handler_node',
+        name='task_handler_node',
+        output='screen',
+        parameters=[{
+            'robot_description': robot_description_content,
+            'robot_description_semantic': robot_description_semantic_content,
+            'robot_description_kinematics': kinematics,
+            'use_sim_time': use_sim_time,
+        }],
+    )
+
     return LaunchDescription([
         use_sim_time_arg,
         image_file_arg,
@@ -208,4 +244,5 @@ def generate_launch_description():
         # arm_driver_node,
         # detector_node,
         # planner_node,
+        task_handler_node,
     ])

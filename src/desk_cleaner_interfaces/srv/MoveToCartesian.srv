@@ -1,0 +1,7 @@
+# Service to move the arm end-effector to a target Cartesian coordinate
+# The arm will plan and execute motion to reach the specified pose
+
+geometry_msgs/Pose target_pose          # Target pose in the base frame (x, y, z, orientation)
+---
+bool success                            # Whether the movement was successful
+string message                          # Detailed status message
