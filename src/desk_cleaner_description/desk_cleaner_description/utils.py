@@ -11,8 +11,8 @@ from launch.substitutions import (
 from launch_ros.descriptions import ParameterValue
 
 
-bringup_dir = get_package_share_directory('desk_cleaner_bringup')
-urdf_file = os.path.join(bringup_dir, 'urdf', 'ur5e_desk_cleaner.urdf.xacro')
+description_dir = get_package_share_directory('desk_cleaner_description')
+urdf_file = os.path.join(description_dir, 'ur5e/urdf', 'ur5e_desk_cleaner.urdf.xacro')
 
 def get_robot_description(sim_gazebo=None):
     # return ParameterValue(

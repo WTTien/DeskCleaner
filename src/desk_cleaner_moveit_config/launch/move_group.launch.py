@@ -27,7 +27,7 @@ from launch.substitutions import (
 from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterValue
 
-from desk_cleaner_bringup.utils import get_robot_description
+from desk_cleaner_description.utils import get_robot_description
 
 def generate_launch_description():
     moveit_dir = get_package_share_directory("desk_cleaner_moveit_config")
@@ -39,7 +39,7 @@ def generate_launch_description():
         except EnvironmentError:
             return None
 
-    srdf_file = os.path.join(moveit_dir, "config", "desk_cleaner.srdf.xacro")
+    srdf_file = os.path.join(moveit_dir, "config/ur5e", "desk_cleaner.srdf.xacro")
 
     # Arguments
     use_sim_time_arg = DeclareLaunchArgument(
@@ -74,8 +74,8 @@ def generate_launch_description():
         value_type=str,
     )
 
-    kinematics = load_yaml(os.path.join(moveit_dir, "config", "kinematics.yaml"))
-    joint_limits = load_yaml(os.path.join(moveit_dir, "config", "joint_limits.yaml"))
+    kinematics = load_yaml(os.path.join(moveit_dir, "config/ur5e", "kinematics.yaml"))
+    joint_limits = load_yaml(os.path.join(moveit_dir, "config/ur5e", "joint_limits.yaml"))
     # MoveIt move_group node
     move_group_node = Node(
         package="moveit_ros_move_group",
@@ -89,11 +89,11 @@ def generate_launch_description():
                 "robot_description_planning": joint_limits,
                 "use_sim_time": use_sim_time,
             },
-            load_yaml(os.path.join(moveit_dir, "config", "ompl_planning.yaml")),
-            load_yaml(os.path.join(moveit_dir, "config", "trajectory_execution.yaml")),
-            load_yaml(os.path.join(moveit_dir, "config", "moveit_cpp.yaml")),
-            load_yaml(os.path.join(moveit_dir, "config", "controllers.yaml")),
-            load_yaml(os.path.join(moveit_dir, "config", "planning_pipelines.yaml")),
+            load_yaml(os.path.join(moveit_dir, "config/ur5e", "ompl_planning.yaml")),
+            load_yaml(os.path.join(moveit_dir, "config/ur5e", "trajectory_execution.yaml")),
+            load_yaml(os.path.join(moveit_dir, "config/ur5e", "moveit_cpp.yaml")),
+            load_yaml(os.path.join(moveit_dir, "config/ur5e", "controllers.yaml")),
+            load_yaml(os.path.join(moveit_dir, "config/ur5e", "planning_pipelines.yaml")),
         ],
     )
 

@@ -42,7 +42,7 @@ from launch_ros.actions import Node
 from launch_ros.descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
-from desk_cleaner_bringup.utils import get_robot_description
+from desk_cleaner_description.utils import get_robot_description
 
 def generate_launch_description():
     bringup_dir = get_package_share_directory('desk_cleaner_bringup')
@@ -204,7 +204,7 @@ def generate_launch_description():
             return None
         
     moveit_dir = get_package_share_directory("desk_cleaner_moveit_config")
-    srdf_file = os.path.join(moveit_dir, "config", "desk_cleaner.srdf.xacro")
+    srdf_file = os.path.join(moveit_dir, "config/ur5e", "desk_cleaner.srdf.xacro")
     robot_description_semantic_content = ParameterValue(
         Command([
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -213,7 +213,7 @@ def generate_launch_description():
         ]),
         value_type=str,
     )
-    kinematics = load_yaml(os.path.join(moveit_dir, "config", "kinematics.yaml"))
+    kinematics = load_yaml(os.path.join(moveit_dir, "config/ur5e", "kinematics.yaml"))
 
     task_handler_node = Node(
         package='desk_cleaner_task_handler',
