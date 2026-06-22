@@ -12,7 +12,7 @@ find_package(xacro REQUIRED)
 find_package(urdf REQUIRED)
 
 install(
-  DIRECTORY ur5e
+  DIRECTORY so_101 ur5e
   DESTINATION share/${PROJECT_NAME}
 )
 

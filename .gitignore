@@ -2,3 +2,4 @@ build/*
 install/*
 log/*
 we_can_delete/*
+*/__pycache__/*
