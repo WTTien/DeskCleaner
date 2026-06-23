@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="so101_ee_leader"
-               params="mesh_dir:='package://so101_description/meshes' add_transmissions:='false'">
+               params="mesh_dir:='package://desk_cleaner_description/so101/meshes' add_transmissions:='false'">
 
     <link name="gripper_link">
       <xacro:inertial_block

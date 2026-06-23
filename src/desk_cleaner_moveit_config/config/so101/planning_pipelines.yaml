@@ -1,0 +1,26 @@
+planning_pipelines:
+  pipeline_names: ["ompl", "pilz_industrial_motion_planner"]
+
+ompl:
+  planning_plugin: ompl_interface/OMPLPlanner
+
+  request_adapters: >-
+    default_planner_request_adapters/AddTimeOptimalParameterization
+    default_planner_request_adapters/FixWorkspaceBounds
+    default_planner_request_adapters/FixStartStateBounds
+    default_planner_request_adapters/FixStartStateCollision
+    default_planner_request_adapters/FixStartStatePathConstraints
+
+pilz_industrial_motion_planner:
+  planning_plugin: pilz_industrial_motion_planner/CommandPlanner
+
+  request_adapters: >-
+    default_planner_request_adapters/AddTimeOptimalParameterization
+    default_planner_request_adapters/FixWorkspaceBounds
+    default_planner_request_adapters/FixStartStateBounds
+    default_planner_request_adapters/FixStartStateCollision
+    default_planner_request_adapters/FixStartStatePathConstraints
+
+  response_adapters: >-
+    default_planning_response_adapters/ValidateSolution
+    default_planning_response_adapters/DisplayMotionPath

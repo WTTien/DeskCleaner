@@ -12,7 +12,8 @@ from launch_ros.descriptions import ParameterValue
 
 
 description_dir = get_package_share_directory('desk_cleaner_description')
-urdf_file = os.path.join(description_dir, 'ur5e/urdf', 'ur5e_desk_cleaner.urdf.xacro')
+urdf_file = os.path.join(description_dir, 'so101/urdf', 'so101_arm.urdf.xacro')
+# urdf_file = os.path.join(description_dir, 'ur5e/urdf', 'ur5e_desk_cleaner.urdf.xacro')
 
 def get_robot_description(sim_gazebo=None):
     # return ParameterValue(
@@ -35,9 +36,14 @@ def get_robot_description(sim_gazebo=None):
         " ",
         urdf_file,
         " ",
-        "name:=ur5e_desk_cleaner",
-        " ",
-        "ur_type:=ur5e",
+        # so101
+        "name:=so101_arm",
+        
+        # ur5e
+        # "name:=ur5e_desk_cleaner",
+        # " ",
+        # "ur_type:=ur5e",
+        
     ]
 
     # Only add sim_gazebo if provided
