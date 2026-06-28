@@ -208,6 +208,9 @@ def generate_launch_description():
             'robot_description_kinematics': kinematics,
             'use_sim_time': use_sim_time,
         }],
+        remappings=[
+            ('/joint_states', '/follower/joint_states')
+        ],  
     )
 
     return LaunchDescription([

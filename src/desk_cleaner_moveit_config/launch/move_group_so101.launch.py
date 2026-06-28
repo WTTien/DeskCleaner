@@ -66,7 +66,7 @@ def generate_launch_description():
     move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
-        remappings=[('joint_states', '/follower/joint_states')],
+        remappings=[('/joint_states', '/follower/joint_states')],
         output="screen",
         parameters=[
             {

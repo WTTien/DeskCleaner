@@ -42,7 +42,12 @@ private:
   std::shared_ptr<moveit::planning_interface::PlanningSceneInterface> planning_scene_;
 
   // Configuration constants (no parameter files needed)
-  static constexpr const char * PLANNING_GROUP = "ur_manipulator";
+  
+  // so101
+  static constexpr const char * PLANNING_GROUP = "manipulator";
+  // ur5e
+  // static constexpr const char * PLANNING_GROUP = "ur_manipulator";
+  
   static constexpr double PLANNING_TIME = 5.0;
   static constexpr double MAX_VELOCITY_SCALING = 0.5;
   static constexpr double MAX_ACCELERATION_SCALING = 0.5;

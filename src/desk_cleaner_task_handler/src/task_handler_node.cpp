@@ -21,7 +21,10 @@ public:
   TaskHandlerNode()
   : rclcpp::Node("task_handler_node")
   {
-    // Create the service
+    // Create service callback group
+    srv_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    
+    // Create the service (pass an explicit QoS object before the callback group)
     move_to_cartesian_srv_ = this->create_service<MoveToCartesian>(
       "/desk_cleaner/move_to_cartesian",
       [this](
@@ -29,7 +32,9 @@ public:
         std::shared_ptr<MoveToCartesian::Response> response)
       {
         this->handleMoveToCartesian(request, response);
-      });
+      },
+      rclcpp::ServicesQoS().get_rmw_qos_profile(),
+      srv_callback_group_);
 
 
     RCLCPP_INFO(this->get_logger(),
@@ -48,6 +53,8 @@ public:
 private:
   std::shared_ptr<desk_cleaner_task_handler::MoveItTaskHandler> task_handler_;
   rclcpp::Service<MoveToCartesian>::SharedPtr move_to_cartesian_srv_;
+  
+  rclcpp::CallbackGroup::SharedPtr srv_callback_group_;
 
   void handleMoveToCartesian(
     const std::shared_ptr<MoveToCartesian::Request> request,
@@ -87,7 +94,12 @@ int main(int argc, char ** argv)
   rclcpp::init(argc, argv);
   auto node = std::make_shared<TaskHandlerNode>();
   node->initialize();
-  rclcpp::spin(node);
+  
+  // rclcpp::spin(node);
+  rclcpp::executors::MultiThreadedExecutor executor;
+  executor.add_node(node);
+  executor.spin();
+  
   rclcpp::shutdown();
   return 0;
 }

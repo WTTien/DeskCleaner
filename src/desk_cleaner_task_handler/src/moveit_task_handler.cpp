@@ -79,7 +79,11 @@ geometry_msgs::msg::Pose MoveItTaskHandler::getCurrentPose()
 bool MoveItTaskHandler::planAndExecute(const geometry_msgs::msg::Pose & target)
 {
   // Step 1: Set the target pose
-  move_group_->setPoseTarget(target);
+   
+  // ur5e
+  // move_group_->setPoseTarget(target);
+  // so101
+  move_group_->setApproximateJointValueTarget(target);
 
   // Step 2: Plan the trajectory
   RCLCPP_INFO(node_->get_logger(), "Planning trajectory...");
