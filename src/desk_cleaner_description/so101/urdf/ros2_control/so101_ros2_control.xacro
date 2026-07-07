@@ -29,21 +29,27 @@
      <xacro:macro name="so101_ros2_control" params="
         variant:='follower'          
         hardware_type:='mock'            
+        sim_gazebo:='false'
         usb_port:='/dev/ttyUSB0'
         joint_config_file:=''
         system_name:='SO101_SYSTEM'">
 
         <ros2_control name="${system_name}" type="system">
               <hardware>
-                <xacro:if value="${hardware_type == 'mock'}">
-                    <plugin>mock_components/GenericSystem</plugin>
+                <xacro:if value="${sim_gazebo}">
+                    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
                 </xacro:if>
+                <xacro:unless value="${sim_gazebo}">
+                    <xacro:if value="${hardware_type == 'mock'}">
+                        <plugin>mock_components/GenericSystem</plugin>
+                    </xacro:if>
 
-                <xacro:if value="${hardware_type == 'real'}">
-                    <plugin>feetech_ros2_driver/FeetechHardwareInterface</plugin>
-                    <param name="usb_port">${usb_port}</param>
-                    <param name="joint_config_file">${joint_config_file}</param>
-                </xacro:if>
+                    <xacro:if value="${hardware_type == 'real'}">
+                        <plugin>feetech_ros2_driver/FeetechHardwareInterface</plugin>
+                        <param name="usb_port">${usb_port}</param>
+                        <param name="joint_config_file">${joint_config_file}</param>
+                    </xacro:if>
+                </xacro:unless>
             </hardware>
             
             <!-- arm joints -->
